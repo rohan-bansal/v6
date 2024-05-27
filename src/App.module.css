@@ -1,0 +1,17 @@
+.velscroll {
+  margin: auto;
+  width: 80%;
+  mask-image: linear-gradient(
+    transparent,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+}
