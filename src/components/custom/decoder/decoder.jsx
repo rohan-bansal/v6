@@ -1,12 +1,13 @@
-import { VisuallyHidden } from "./visuallyHidden";
+import { VisuallyHidden } from "../visually_hidden/visuallyHidden";
 import { useSpring } from "framer-motion";
 import { memo, useEffect, useRef } from "react";
-import { classes } from "./style";
+// import { classes } from "../../../style";
 import styles from "./decoder-text.module.css";
 
-// export async function delay(ms) {
-//   return new Promise((resolve) => setTimeout(resolve, ms));
-// }
+function classes(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
 // prettier-ignore
 const glyphs = [
   'ア', 'イ', 'ウ', 'エ', 'オ',

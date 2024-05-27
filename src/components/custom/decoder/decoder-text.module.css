@@ -13,13 +13,6 @@
   letter-spacing: 0.1em;
 }
 
-.placeholder {
-  font-family: "Space Mono, monospace";
-  font-size: 2.25rem;
-  letter-spacing: 0.5em;
-  line-height: 2.5rem;
-}
-
 .value {
   opacity: 1;
 }

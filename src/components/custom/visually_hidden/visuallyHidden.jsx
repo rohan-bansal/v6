@@ -1,6 +1,10 @@
 import { forwardRef } from "react";
-import { classes } from "./style";
+// import { classes } from "../../../style";
 import styles from "./visually-hidden.module.css";
+
+function classes(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export const VisuallyHidden = forwardRef(
   (

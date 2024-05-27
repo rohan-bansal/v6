@@ -6,7 +6,7 @@
   @font-face {
     font-family: IPA Gothic;
     font-weight: 400;
-    src: url(./ipa-gothic.woff2) format("woff");
+    src: url(./fonts/ipa-gothic.woff2) format("woff");
     font-display: swap;
     font-style: normal;
   }

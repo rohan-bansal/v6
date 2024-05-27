@@ -1,7 +1,6 @@
-import "./App.css";
-import { DecoderText } from "./decoder";
-import BoxReveal from "./components/magicui/box-reveal";
-import { VelocityScroll } from "./components/magicui/scroll-based-velocity";
+import { DecoderText } from "../components/custom/decoder/decoder";
+import BoxReveal from "../components/magicui/box-reveal";
+import { VelocityScroll } from "../components/magicui/scroll-based-velocity";
 import { useEffect, useState } from "react";
 import styles from "./App.module.css";
 
