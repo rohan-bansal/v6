@@ -26,7 +26,7 @@ module.exports = {
         },
         grid: {
           "0%": { transform: "translateY(-50%)" },
-          "100%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-25%)" },
         },
       },
     },
