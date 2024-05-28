@@ -48,17 +48,17 @@ function shuffle(content, output, position) {
 }
 
 export const DecoderText = memo(
-  ({ text, start = true, startDecoding = false, className, ...rest }) => {
+  ({ text, start = true, trigger = false, onComplete, className, ...rest }) => {
     const output = useRef([{ type: CharType.Glyph, value: "" }]);
     const container = useRef();
     const decoderSpring = useSpring(0, { stiffness: 8, damping: 5 });
 
     useEffect(() => {
-      if (startDecoding) {
+      if (trigger) {
         decoderSpring.jump(0);
         decoderSpring.set(text.split("").length);
       }
-    }, [startDecoding]);
+    }, [trigger]);
 
     useEffect(() => {
       const containerInstance = container.current;
@@ -76,6 +76,10 @@ export const DecoderText = memo(
       const unsubscribeSpring = decoderSpring.on("change", (value) => {
         output.current = shuffle(content, output.current, value);
         renderOutput();
+
+        if (value > content.length * 0.8) {
+          onComplete?.();
+        }
       });
 
       const startSpring = async () => {

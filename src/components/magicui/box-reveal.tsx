@@ -34,7 +34,6 @@ export const BoxReveal = ({
     }
     if (isInView) {
       animateSlide();
-      // mainControls.start("visible");
     } else {
       slideControls.start("opening_start");
       mainControls.start("hidden");

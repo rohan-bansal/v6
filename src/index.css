@@ -4,10 +4,16 @@
 
 @layer base {
   @font-face {
-    font-family: IPA Gothic;
+    font-family: "IPA Gothic";
     font-weight: 400;
     src: url(./fonts/ipa-gothic.woff2) format("woff");
     font-display: swap;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Regards";
+    font-weight: 400;
+    src: url(./fonts/regards.ttf) format("ttf");
     font-style: normal;
   }
 }
@@ -24,4 +30,21 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.role-blur::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(rgba(0, 0, 0, 0) 1px, #111010 1px);
+  background-size: 4px 4px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  -moz-backdrop-filter: blur(3px);
+  transition: background-size 0.4s ease-in-out;
+}
+
+.role-blur:hover::after {
+  background-size: 2px 2px;
 }

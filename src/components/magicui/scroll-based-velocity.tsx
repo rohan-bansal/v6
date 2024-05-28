@@ -20,9 +20,17 @@ interface VelocityScrollProps {
 }
 
 interface ParallaxProps {
-  children: string;
+  children: string[];
   baseVelocity: number;
   className?: string;
+}
+
+function shuffleArray(array: string[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 export function VelocityScroll({
@@ -49,13 +57,15 @@ export function VelocityScroll({
 
     const [repetitions, setRepetitions] = useState(1);
     const containerRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLSpanElement>(null);
-
+    const textRef = useRef<(HTMLSpanElement | null)[]>([]);
     useEffect(() => {
       const calculateRepetitions = () => {
-        if (containerRef.current && textRef.current) {
+        if (containerRef.current && textRef.current.length > 0) {
           const containerWidth = containerRef.current.offsetWidth;
-          const textWidth = textRef.current.offsetWidth;
+          const textWidth = textRef.current.reduce(
+            (acc, el) => acc + (el?.offsetWidth || 0),
+            0
+          );
           const newRepetitions = Math.ceil(containerWidth / textWidth) + 2;
           setRepetitions(newRepetitions);
         }
@@ -91,22 +101,36 @@ export function VelocityScroll({
       >
         <motion.div className={cn("inline-block", className)} style={{ x }}>
           {Array.from({ length: repetitions }).map((_, i) => (
-            <span key={i} ref={i === 0 ? textRef : null}>
-              {children}{" "}
-            </span>
+            <React.Fragment key={i}>
+              {children.map((word, index) => (
+                <span
+                  key={`${i}-${index}`}
+                  ref={(el) => {
+                    textRef.current[index] = el;
+                  }}
+                  className="role-blur"
+                  style={{ position: "relative" }}
+                >
+                  {word}{" "}
+                </span>
+              ))}
+            </React.Fragment>
           ))}
         </motion.div>
       </div>
     );
   }
 
+  const shuffledText = shuffleArray(text.split(" "));
+  const shuffledText2 = shuffleArray(text.split(" "));
+
   return (
     <section className="relative w-full">
       <ParallaxText baseVelocity={default_velocity} className={className}>
-        {text}
+        {shuffledText}
       </ParallaxText>
       <ParallaxText baseVelocity={-default_velocity} className={className}>
-        {text}
+        {shuffledText2}
       </ParallaxText>
     </section>
   );

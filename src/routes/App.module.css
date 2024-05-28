@@ -1,5 +1,35 @@
 .velscroll {
   margin: auto;
+  width: 50%;
+  mask-image: linear-gradient(
+    transparent,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 20%,
+    black 80%,
+    transparent 100%
+  );
+}
+
+/* .velscroll::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(rgba(0, 0, 0, 0) 1px, #111010 1px);
+  background-size: 4px 4px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  -moz-backdrop-filter: blur(3px);
+} */
+/* 
+.velscrollvis {
+  margin: auto;
   width: 80%;
   mask-image: linear-gradient(
     transparent,
@@ -15,3 +45,15 @@
     transparent 100%
   );
 }
+
+.velscrollvis::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(rgba(0, 0, 0, 0) 1px, #111010 20px);
+  background-size: 4px 4px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  -moz-backdrop-filter: blur(3px);
+} */

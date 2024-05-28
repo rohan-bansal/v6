@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         space: ["Space Mono", "monospace"],
         mplus: ["M PLUS 1 Code", "monospace"],
+        regards: ["Regards", "sans-serif"],
       },
       colors: {
         primary: "#111010", // 111010 171616 0F172B
