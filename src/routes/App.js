@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen">
-      <main className="grow bg-primary z-10">
+      <main className="flex flex-col grow bg-primary z-10">
         <div className="flex justify-center items-center mt-72 mb-12 ml-4">
           <BoxReveal
             boxColor={"#F389C3"}
@@ -27,14 +27,14 @@ function App() {
             </h1>
           </BoxReveal>
         </div>
-        <div className={styles.velscroll}>
+        <div className={`${styles.velscroll} flex`}>
           <VelocityScroll
             text="ideator tinkerer rapid unscheduled disassembler yellow jacket robotics nerd space fanatic silicon sorcerer"
             default_velocity={1}
             className="font-space text-center text-m tracking-[-0.02em] text-white"
           />
         </div>
-        <div className="h-screen"></div>
+        <div className="bg-primary grow content-div"></div>
       </main>
     </div>
   );
