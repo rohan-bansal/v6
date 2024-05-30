@@ -35,7 +35,7 @@ const SolarSystemAnimation = () => {
   const baseRotation = 1650;
 
   const { scrollY } = useScroll();
-  const yRange = useTransform(scrollY, [0, 5000], [0, 360]);
+  const yRange = useTransform(scrollY, [0, 4000], [0, 360]);
 
   const updateRotation = () => {
     const rotation = yRange.get() + baseRotation;
@@ -252,9 +252,9 @@ const SolarSystemAnimation = () => {
           </div>
         </motion.div>
       </div>
-      {new Array(5).fill(null).map((_, index) => (
+      {/* {new Array(5).fill(null).map((_, index) => (
         <div className="w-screen h-screen" key={index} />
-      ))}
+      ))} */}
     </div>
   );
 };
