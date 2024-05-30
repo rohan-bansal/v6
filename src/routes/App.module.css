@@ -16,6 +16,11 @@
   );
 }
 
+.filtered-svg {
+  filter: invert(87%) sepia(100%) saturate(0%) hue-rotate(314deg)
+    brightness(108%) contrast(101%);
+}
+
 /* .velscroll::after {
   content: "";
   position: absolute;
