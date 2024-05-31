@@ -1,5 +1,10 @@
 import { useEffect, useRef } from "react";
-import { useScroll, useTransform, motion, useSpring } from "framer-motion";
+import {
+  useScroll,
+  useMotionValueEvent,
+  motion,
+  useSpring,
+} from "framer-motion";
 import Sun from "../../../assets/sun.svg";
 import Venus from "../../../assets/venus.svg";
 import Earth from "../../../assets/earth.svg";
@@ -8,225 +13,215 @@ import Moon from "../../../assets/moon.svg";
 import OrbitPath from "../../../assets/orbit.svg";
 
 const SolarSystemAnimation = () => {
+  const sunSpring = useSpring(0, { stiffness: 500, damping: 30 });
+  const venusSpring = useSpring(0, { stiffness: 500, damping: 30 });
+  const earthSpring = useSpring(0, { stiffness: 500, damping: 30 });
+  const moonSpring = useSpring(0, { stiffness: 500, damping: 30 });
+  const saturnSpring = useSpring(0, { stiffness: 500, damping: 30 });
+
   const backgroundColor = "#090909";
 
   const sunRef = useRef(null);
 
   const venusRef = useRef(null);
   const venusRefOrbit = useRef(null);
-  const venusRotationSpeed = 3;
   const venusDistance = 200;
 
   const earthRef = useRef(null);
   const earthRefOrbit = useRef(null);
-  const earthRotationSpeed = 2;
   const earthDistance = 400;
 
   const moonRef = useRef(null);
   const moonRefOrbit = useRef(null);
-  const moonRotationSpeed = 5;
   const moonDistance = 100;
 
   const saturnRef = useRef(null);
   const saturnRefOrbit = useRef(null);
-  const saturnRotationSpeed = 1;
   const saturnDistance = 600;
 
-  const baseRotation = 1650;
-
   const { scrollY } = useScroll();
-  const yRange = useTransform(scrollY, [0, 4000], [0, 360]);
 
-  const updateRotation = () => {
-    const rotation = yRange.get() + baseRotation;
+  const open = useRef(false);
 
-    if (yRange.get() < 40) {
-      sunRef.current.style.transform = `scale(${yRange.get() / 40}) rotate(${
-        rotation * 0.2
-      }deg)`;
+  useEffect(() => {
+    const unsubscribeSunSpring = sunSpring.on("change", (value) => {
+      sunRef.current.style.transform = `scale(${value})`;
+
+      if (value > 0.6 && open.current) {
+        venusSpring.set(1);
+      }
+      if (value < 0.4 && !open.current) {
+        console.log("here");
+        venusSpring.set(0);
+      }
+    });
+
+    const unsubscribeVenusSpring = venusSpring.on("change", (value) => {
+      venusRef.current.style.transform = `scale(${value}) translateX(${venusDistance}px)`;
+      venusRefOrbit.current.style.transform = `scale(${value})`;
+
+      if (value > 0.6 && open.current) {
+        earthSpring.set(1);
+        venusRef.current.className = "venus-rotate";
+      }
+      if (value < 0.4 && !open.current) {
+        earthSpring.set(0);
+        venusRef.current.className = "";
+      }
+    });
+
+    const unsubscribeEarthSpring = earthSpring.on("change", (value) => {
+      earthRef.current.style.transform = `scale(${value}) translateX(${earthDistance}px)`;
+      earthRefOrbit.current.style.transform = `scale(${value})`;
+
+      if (value > 0.6 && open.current) {
+        moonSpring.set(1);
+        saturnSpring.set(1);
+        earthRef.current.className = "earth-rotate";
+      }
+      if (value < 0.4 && !open.current) {
+        moonSpring.set(0);
+        saturnSpring.set(0);
+        earthRef.current.className = "";
+      }
+    });
+
+    const unsubscribeMoonSpring = moonSpring.on("change", (value) => {
+      moonRef.current.style.transform = `scale(${value}) translateX(${moonDistance}px)`;
+      // moonRefOrbit.current.style.transform = `scale(${value})`;
+
+      if (value > 0.6 && open.current) {
+        moonRef.current.className = "moon-rotate";
+      }
+      if (value < 0.4 && !open.current) {
+        moonRef.current.className = "";
+      }
+    });
+
+    const unsubscribeSaturnSpring = saturnSpring.on("change", (value) => {
+      saturnRef.current.style.transform = `scale(${value}) translateX(${saturnDistance}px)`;
+      saturnRefOrbit.current.style.transform = `scale(${value})`;
+
+      if (value > 0.6 && open.current) {
+        saturnRef.current.className = "saturn-rotate";
+      }
+      if (value < 0.4 && !open.current) {
+        saturnRef.current.className = "";
+      }
+    });
+
+    return () => {
+      unsubscribeSunSpring();
+      unsubscribeVenusSpring();
+      unsubscribeEarthSpring();
+      unsubscribeMoonSpring();
+      unsubscribeSaturnSpring();
+    };
+  }, []);
+
+  const showHide = () => {
+    if (scrollY.get() > window.innerHeight / 2) {
+      open.current = true;
+      sunSpring.set(1);
     } else {
-      sunRef.current.style.transform = `rotate(${rotation * 0.2}deg)`;
-    }
-
-    if (yRange.get() < 60) {
-      venusRefOrbit.current.style.transform = `scale(${
-        yRange.get() / 60
-      }) rotate(${rotation * venusRotationSpeed}deg)`;
-      venusRef.current.style.transform = `scale(${yRange.get() / 60}) rotate(${
-        rotation * venusRotationSpeed
-      }deg) translateX(${venusDistance}px) rotate(-${
-        rotation * venusRotationSpeed
-      }deg)`;
-    } else {
-      venusRefOrbit.current.style.transform = `rotate(${
-        rotation * venusRotationSpeed
-      }deg)`;
-      venusRef.current.style.transform = `rotate(${
-        rotation * venusRotationSpeed
-      }deg) translateX(${venusDistance}px) rotate(-${
-        rotation * venusRotationSpeed
-      }deg)`;
-    }
-
-    if (yRange.get() < 80) {
-      earthRefOrbit.current.style.transform = `scale(${
-        yRange.get() / 80
-      }) rotate(${rotation * earthRotationSpeed}deg)`;
-      earthRef.current.style.transform = `scale(${yRange.get() / 80}) rotate(${
-        rotation * earthRotationSpeed
-      }deg) translateX(${earthDistance}px) rotate(-${
-        rotation * earthRotationSpeed
-      }deg)`;
-    } else {
-      earthRefOrbit.current.style.transform = `rotate(${
-        rotation * earthRotationSpeed
-      }deg)`;
-      earthRef.current.style.transform = `rotate(${
-        rotation * earthRotationSpeed
-      }deg) translateX(${earthDistance}px) rotate(-${
-        rotation * earthRotationSpeed
-      }deg)`;
-    }
-
-    if (yRange.get() < 80) {
-      moonRefOrbit.current.style.transform = `scale(${
-        yRange.get() / 80
-      }) rotate(${rotation * moonRotationSpeed}deg)`;
-      moonRef.current.style.transform = `scale(${yRange.get() / 80}) rotate(${
-        rotation * moonRotationSpeed
-      }deg) translateX(${moonDistance}px) rotate(-${
-        rotation * moonRotationSpeed
-      }deg)`;
-    } else {
-      moonRefOrbit.current.style.transform = `rotate(${
-        rotation * moonRotationSpeed
-      }deg)`;
-      moonRef.current.style.transform = `rotate(${
-        rotation * moonRotationSpeed
-      }deg) translateX(${moonDistance}px) rotate(-${
-        rotation * moonRotationSpeed
-      }deg)`;
-    }
-
-    if (yRange.get() < 100) {
-      saturnRefOrbit.current.style.transform = `scale(${
-        yRange.get() / 100
-      }) rotate(${rotation * saturnRotationSpeed}deg)`;
-      saturnRef.current.style.transform = `scale(${
-        yRange.get() / 100
-      }) rotate(${
-        rotation * saturnRotationSpeed
-      }deg) translateX(${saturnDistance}px) rotate(-${
-        rotation * saturnRotationSpeed
-      }deg)`;
-    } else {
-      saturnRefOrbit.current.style.transform = `rotate(${
-        rotation * saturnRotationSpeed
-      }deg)`;
-      saturnRef.current.style.transform = `rotate(${
-        rotation * saturnRotationSpeed
-      }deg) translateX(${saturnDistance}px) rotate(-${
-        rotation * saturnRotationSpeed
-      }deg)`;
+      open.current = false;
+      sunSpring.set(0);
     }
   };
 
   useEffect(() => {
-    updateRotation();
-  });
+    showHide();
+  }, []);
 
   useEffect(() => {
-    const unsubscribeY = yRange.on("change", updateRotation);
+    const unsubScroll = scrollY.on("change", showHide);
 
     return () => {
-      unsubscribeY();
+      unsubScroll();
     };
-  }, [yRange]);
+  }, []);
 
   return (
     <div className="overflow-hidden">
       <div className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center">
-        <motion.div ref={sunRef}>
-          <img src={Sun} alt="Sun" />
+        <motion.div initial={{ scale: 0 }} ref={sunRef}>
+          <img className="sun-rotate" src={Sun} alt="Sun" />
         </motion.div>
         <motion.div
           ref={venusRefOrbit}
+          initial={{ scale: 0 }}
           style={{ position: "absolute", zIndex: 10 }}
         >
           <img
             src={OrbitPath}
+            className="venus-orbit-rotate"
             alt="VenusOrbitPath"
-            style={{
-              minHeight: `${venusDistance * 2}px`,
-              minWidth: `${venusDistance * 2}px`,
-            }}
           />
         </motion.div>
         <motion.div
           ref={earthRefOrbit}
+          initial={{ scale: 0 }}
           style={{ position: "absolute", zIndex: 10 }}
         >
           <img
             src={OrbitPath}
+            className="earth-orbit-rotate"
             alt="earthOrbitPath"
-            style={{
-              minHeight: `${earthDistance * 2}px`,
-              minWidth: `${earthDistance * 2}px`,
-            }}
           />
         </motion.div>
         <motion.div
           ref={saturnRefOrbit}
+          initial={{ scale: 0 }}
           style={{ position: "absolute", zIndex: 10 }}
         >
           <img
             src={OrbitPath}
+            className="saturn-orbit-rotate"
             alt="saturnOrbitPath"
-            style={{
-              minHeight: `${saturnDistance * 2}px`,
-              minWidth: `${saturnDistance * 2}px`,
-            }}
           />
         </motion.div>
         <motion.div
           ref={venusRef}
+          initial={{ scale: 0 }}
           style={{ position: "absolute", zIndex: 200 }}
         >
           <div
             className={`fit-content rounded-full bg-[${backgroundColor}] p-3`}
           >
-            <img src={Venus} alt="Venus" />
+            <img src={Venus} alt="Venus" className="venus-image-cancel" />
           </div>
         </motion.div>
         <motion.div
           ref={earthRef}
+          initial={{ scale: 0 }}
           style={{ position: "absolute", zIndex: 200 }}
         >
           <div
             className={`fit-content rounded-full bg-[${backgroundColor}] p-3`}
           >
-            <img src={Earth} alt="Earth" />
+            <img src={Earth} alt="Earth" className="earth-image-cancel" />
           </div>
-          <motion.div
+          {/* <motion.div
             ref={moonRefOrbit}
+            initial={{ scale: 0 }}
             style={{
               position: "absolute",
               zIndex: 20,
-              top: "-35%",
-              left: "-40%",
+              top: "-30%",
+              left: "-30%",
+              aspectRatio: "1/1",
+              minHeight: "15vh",
             }}
           >
             <img
               src={OrbitPath}
+              className="moon-orbit-rotate"
               alt="moonOrbitPath"
-              style={{
-                minHeight: `${moonDistance * 2}px`,
-                minWidth: `${moonDistance * 2}px`,
-              }}
             />
-          </motion.div>
+          </motion.div> */}
           <motion.div
             ref={moonRef}
+            initial={{ scale: 0 }}
             style={{
               position: "absolute",
               zIndex: 300,
@@ -237,24 +232,22 @@ const SolarSystemAnimation = () => {
             <div
               className={`fit-content rounded-full bg-[${backgroundColor}] p-1`}
             >
-              <img src={Moon} alt="Moon" />
+              <img src={Moon} alt="Moon" className="moon-image-cancel" />
             </div>
           </motion.div>
         </motion.div>
         <motion.div
           ref={saturnRef}
+          initial={{ scale: 0 }}
           style={{ position: "absolute", zIndex: 200 }}
         >
           <div
             className={`fit-content rounded-full bg-[${backgroundColor}] p-3`}
           >
-            <img src={Saturn} alt="Saturn" />
+            <img src={Saturn} alt="Saturn" className="saturn-image-cancel" />
           </div>
         </motion.div>
       </div>
-      {/* {new Array(5).fill(null).map((_, index) => (
-        <div className="w-screen h-screen" key={index} />
-      ))} */}
     </div>
   );
 };

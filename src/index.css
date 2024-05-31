@@ -63,3 +63,121 @@ code {
 .role-blur:hover::after {
   background-size: 2px 2px;
 }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes VenusSpin {
+  from {
+    transform: rotate(0deg) translateX(15vh);
+  }
+  to {
+    transform: rotate(360deg) translateX(15vh);
+  }
+}
+
+@keyframes EarthSpin {
+  from {
+    transform: rotate(0deg) translateX(30vh);
+  }
+  to {
+    transform: rotate(360deg) translateX(30vh);
+  }
+}
+
+@keyframes SaturnSpin {
+  from {
+    transform: rotate(0deg) translateX(45vh);
+  }
+  to {
+    transform: rotate(360deg) translateX(45vh);
+  }
+}
+
+@keyframes MoonSpin {
+  from {
+    transform: rotate(0deg) translateX(7.5vh);
+  }
+  to {
+    transform: rotate(360deg) translateX(7.5vh);
+  }
+}
+
+.sun-rotate {
+  animation: spin 20s linear infinite;
+  animation-direction: reverse;
+  height: 5vw;
+  aspect-ratio: 1/1;
+}
+
+.venus-orbit-rotate {
+  animation: spin 10s linear infinite;
+  min-height: 30vh;
+  aspect-ratio: 1/1;
+}
+
+.earth-orbit-rotate {
+  animation: spin 15s linear infinite;
+  animation-direction: reverse;
+  min-height: 60vh;
+  aspect-ratio: 1/1;
+}
+
+.saturn-orbit-rotate {
+  animation: spin 20s linear infinite;
+  min-height: 90vh;
+  aspect-ratio: 1/1;
+}
+
+.moon-orbit-rotate {
+  animation: spin 10s linear infinite;
+  min-height: 15vh;
+  aspect-ratio: 1/1;
+}
+
+.venus-rotate {
+  animation: VenusSpin 10s linear infinite;
+  height: 4vw;
+  aspect-ratio: 1/1;
+}
+
+.venus-image-cancel {
+  animation: spin 10s linear infinite;
+  animation-direction: reverse;
+}
+
+.earth-rotate {
+  animation: EarthSpin 15s linear infinite;
+  animation-direction: reverse;
+  height: 4vw;
+  aspect-ratio: 1/1;
+}
+
+.earth-image-cancel {
+  animation: spin 15s linear infinite;
+}
+
+.saturn-rotate {
+  animation: SaturnSpin 20s linear infinite;
+  height: 4vw;
+  aspect-ratio: 1/1;
+}
+
+.saturn-image-cancel {
+  animation: spin 20s linear infinite;
+  animation-direction: reverse;
+}
+
+.moon-rotate {
+  animation: MoonSpin 10s linear infinite;
+  height: 2vw;
+  aspect-ratio: 1/1;
+}
+
+.moon-image-cancel {
+  animation: spin 10s linear infinite;
+  animation-direction: reverse;
+}
